@@ -36,7 +36,7 @@ def main():
 	adb.pull('/data/data/com.android.providers.telephony/databases/telephony.db',db)
 	
 	print "Extracting photos"
-	result = adb.shell("ls /mnt/sdcard/DCIM/Camera -l")
+	result = adb.shell("ls /mnt/sdcard/DCIM/Camera")
 	result = result.strip('\n')
 	print result
 	f = open ("%s/list.txt" % photo, 'w')
