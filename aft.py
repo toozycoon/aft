@@ -2,6 +2,8 @@ import os
 import re
 from lib.adb import AndroidDebugBridge
 import string
+from lib.read_db import *
+
 
 adb = AndroidDebugBridge()
 
@@ -12,8 +14,11 @@ def main():
 		os.makedirs(dir)
 	os.makedirs("%s/database" % dir)
 	os.makedirs("%s/photos" % dir)
+	os.makedirs("%s/reports" % dir)
+	
 	db = dir + "/database"
 	photo = dir + "/photos"
+	report = dir + "/reports"
 	aphoto = "/mnt/sdcard/DCIM/Camera/"
 	
 	result = adb.get_state()
@@ -49,6 +54,9 @@ def main():
 		for m in re.finditer(regex, f.read()):
 			print '%s%s' % (aphoto, m.group())	
 			adb.pull('/mnt/sdcard/DCIM/Camera/%s' % m.group(), photo)
-			
+
+	read_account(db, report)
+	read_history(db, report)
+	
 if __name__ == "__main__":
     main()
