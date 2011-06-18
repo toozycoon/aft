@@ -4,7 +4,6 @@ from lib.adb import AndroidDebugBridge
 import string
 from lib.read_db import *
 
-
 adb = AndroidDebugBridge()
 
 def main():
@@ -26,7 +25,7 @@ def main():
 	if result == "unknown":
 		print "Not able to access device. Please check whether the device is connected properly and USB debugging mode is enabled"
 	
-	print "Extracting database"
+	print "Extracting databases:"
 	print "Extracting accounts.db"
 	adb.pull('/data/system/accounts.db',db)
 	print "Extracting mmssms.db"
@@ -42,7 +41,7 @@ def main():
 	print "Extracting telephony.db"
 	adb.pull('/data/data/com.android.providers.telephony/databases/telephony.db',db)
 
-	print "Extracting photos"
+	print "\nExtracting photos:"
 	result = adb.shell("ls /mnt/sdcard/DCIM/Camera")
 	f = open ("%s/list.txt" % photo, 'w')
 	f.write(result)
@@ -50,10 +49,15 @@ def main():
 	
 	regex = r'\S[^\r\n\t]*\.jpg'
 	
-	with open("%s/list.txt" % photo,'r') as f:
-		for m in re.finditer(regex, f.read()):
-			print '%s%s' % (aphoto, m.group())	
-			adb.pull('/mnt/sdcard/DCIM/Camera/%s' % m.group(), photo)
+	f = open("%s/list.txt" % photo,'r')
+	content = f.read()
+	fList = content.strip().split()
+
+	regex = r'\S[^\r\n\t]*\.jpg'
+
+	for x in range(0,len(fList)):
+		if re.search(regex,fList[x]):
+			adb.pull('/mnt/sdcard/DCIM/Camera/%s' % fList[x], photo)
 
 	read_account(db, report)
 	read_history(db, report)
