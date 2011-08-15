@@ -1,1 +1,9 @@
-Test
+Android Forenisc Toolkit
+
+Prerequisites:
+- Python v2
+- Android SDK with ADB
+
+Usage:
+If the Python path has been set, just execute the file aft.py, else use the command "python aft.py".
+
