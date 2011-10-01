@@ -61,6 +61,9 @@ def main():
 
 	read_account(db, report)
 	read_history(db, report)
+	read_bookmark(db, report)
+	read_search(db, report)
+	
 	
 if __name__ == "__main__":
     main()

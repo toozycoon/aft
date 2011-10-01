@@ -32,6 +32,29 @@ class UnicodeWriter:
             self.writerow(row)
 
 
+def read_search(dbase,report):
+	db = sqlite3.connect("%s/browser.db" % dbase)
+	c = db.cursor()
+	c.execute('select search, datetime(date/1000,\'unixepoch\') from searches;')
+
+	writer = UnicodeWriter(open("%s/searches.csv" % report, "wb"))
+	writer.writerow(["Search Term", "Date & Time (GMT)"])
+	writer.writerows(c)
+	#writer.writerow("Note: Only search made through browser")
+	c.close()
+	db.close()
+
+def read_bookmark(dbase,report):
+	db = sqlite3.connect("%s/browser.db" % dbase)
+	c = db.cursor()
+	c.execute('select title, url, visits, datetime(date/1000,\'unixepoch\') from bookmarks where bookmark = 1;')
+
+	writer = UnicodeWriter(open("%s/bookmarks.csv" % report, "wb"))
+	writer.writerow(["Title", "URL", "Visits", "Date & Time (GMT)"])
+	writer.writerows(c)
+	c.close()
+	db.close()
+
 def read_history(dbase,report):
 	db = sqlite3.connect("%s/browser.db" % dbase)
 	c = db.cursor()
