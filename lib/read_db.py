@@ -1,5 +1,5 @@
 import sqlite3
-from datetime import datetime
+#from datetime import datetime
 import csv, codecs, cStringIO
 
 class UnicodeWriter:
@@ -35,10 +35,10 @@ class UnicodeWriter:
 def read_history(dbase,report):
 	db = sqlite3.connect("%s/browser.db" % dbase)
 	c = db.cursor()
-	c.execute('select title, url, visits, date from bookmarks where user_entered = 0 or user_entered=1;')
+	c.execute('select url, visits, datetime(date/1000,\'unixepoch\') from bookmarks where user_entered = 0 or user_entered=1;')
 
 	writer = UnicodeWriter(open("%s/history.csv" % report, "wb"))
-	writer.writerow(["Title", "URL", "Visits", "Date"])
+	writer.writerow(["URL", "Visits", "Date & Time (GMT)"])
 	writer.writerows(c)
 	c.close()
 	db.close()
