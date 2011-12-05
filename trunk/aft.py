@@ -20,8 +20,11 @@ def main():
 	report = dir + "/reports"
 	aphoto = "/mnt/sdcard/DCIM/Camera/"
 	
+	adb.call_adb('start-server')
+	
 	result = adb.get_state()
 	result = result.strip('\n')
+	print result
 	if result == "unknown":
 		print "Not able to access device. Please check whether the device is connected properly and USB debugging mode is enabled"
 	
